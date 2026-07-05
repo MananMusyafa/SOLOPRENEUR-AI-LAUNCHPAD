@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dashboard Solopreneur AI Launchpad - Akses Pustaka Prompt Premium Anda.">
+    <title>Dashboard - Solopreneur AI Launchpad</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* Specific Styles for Product Dashboard Page */
+        .product-body {
+            display: flex;
+            min-height: 100vh;
+            background-color: #09090b;
+        }
+
+        /* Sidebar Navigation */
+        .product-sidebar {
+            width: 300px;
+            background: #0c0c0e;
+            border-right: 1px solid #1f1f23;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            padding: 32px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            z-index: 10;
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-heading);
+            font-weight: 800;
+            font-size: 1.15rem;
+            letter-spacing: 0.05em;
+            color: var(--text-main);
+        }
+
+        .sidebar-logo i {
+            color: var(--primary);
+        }
+
+        .sidebar-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            list-style: none;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition-smooth);
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar-menu a.active {
+            border-left: 3px solid var(--primary);
+            border-radius: 0 12px 12px 0;
+            padding-left: 13px;
+        }
+
+        /* Main Content Dashboard */
+        .product-content {
+            margin-left: 300px;
+            flex: 1;
+            padding: 48px 64px;
+            max-width: 1000px;
+        }
+
+        .product-header-card {
+            display: flex;
+            gap: 32px;
+            padding: 40px;
+            border-radius: 24px;
+            align-items: center;
+            margin-bottom: 48px;
+        }
+
+        .header-mockup-mini {
+            width: 120px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Prompt Card Styles */
+        .prompt-section {
+            margin-bottom: 56px;
+            scroll-margin-top: 40px;
+        }
+
+        .section-intro-text {
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            font-size: 1.05rem;
+        }
+
+        .prompt-card {
+            background: #121214;
+            border: 1px solid #1f1f23;
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 32px;
+            position: relative;
+        }
+
+        .prompt-card h4 {
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+            color: var(--text-main);
+        }
+
+        .prompt-card-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+
+        /* Text Area Container for Prompt */
+        .prompt-box-wrapper {
+            position: relative;
+            background: #09090b;
+            border: 1px solid #27272a;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .prompt-box-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 16px;
+            background: #18181b;
+            border-bottom: 1px solid #27272a;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .prompt-content-text {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: #d4d4d8;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            padding: 16px;
+            resize: none;
+            outline: none;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+
+        .btn-copy {
+            background: var(--primary);
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-copy:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-copy.copied {
+            background: var(--accent-green);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .product-body {
+                flex-direction: column;
+            }
+            .product-sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+                padding: 24px;
+                border-right: none;
+                border-bottom: 1px solid #1f1f23;
+            }
+            .product-content {
+                margin-left: 0;
+                padding: 32px 24px;
+            }
+            .product-header-card {
+                flex-direction: column;
+                text-align: center;
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body class="product-body">
+
+    <!-- Sidebar Dashboard -->
+    <aside class="product-sidebar">
+        <div class="sidebar-logo">
+            <i class="fa-solid fa-rocket"></i>
+            <span>AI LAUNCHPAD</span>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#welcome" class="active"><i class="fa-solid fa-house"></i> Selamat Datang</a></li>
+            <li><a href="#modul1"><i class="fa-solid fa-magnifying-glass"></i> Modul 1: Riset Pasar</a></li>
+            <li><a href="#modul2"><i class="fa-solid fa-pen-nib"></i> Modul 2: Copywriting</a></li>
+            <li><a href="#modul3"><i class="fa-solid fa-photo-film"></i> Modul 3: Konten Sosmed</a></li>
+            <li><a href="#modul4"><i class="fa-solid fa-gears"></i> Modul 4: Operasional</a></li>
+            <li style="margin-top: auto; border-top: 1px solid #1f1f23; padding-top: 16px;">
+                <a href="landing.html"><i class="fa-solid fa-arrow-left"></i> Keluar Halaman</a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Main Dashboard Content -->
+    <main class="product-content">
+        
+        <!-- Header Card -->
+        <header class="product-header-card glass" id="welcome">
+            <img src="assets/mockup.jpg" alt="Mini Mockup" class="header-mockup-mini">
+            <div>
+                <span class="sub-badge">DASHBOARD PRODUK</span>
+                <h1 style="font-size: 2rem; margin-bottom: 8px;">Solopreneur AI Launchpad</h1>
+                <p>Gunakan pustaka prompt siap pakai di bawah ini untuk mengotomatiskan bisnis solo Anda secara cepat.</p>
+            </div>
+        </header>
+
+        <!-- Modul 1 Section -->
+        <section class="prompt-section" id="modul1">
+            <h2 class="gradient-text" style="font-size: 1.75rem; margin-bottom: 8px;">📂 MODUL 1: Riset Pasar & Validasi Ide</h2>
+            <p class="section-intro-text">Gunakan modul riset pasar ini untuk menentukan target pasar secara tepat dan menganalisis kelemahan kompetitor Anda.</p>
+            
+            <!-- Prompt 1.1 -->
+            <div class="prompt-card">
+                <h4>Prompt 1.1: Pemetaan Persona Pelanggan Ideal (ICP)</h4>
+                <p class="prompt-card-desc">Tujuan: Mengetahui demografi, psikografis, ketakutan terbesar, dan keberatan beli calon pembeli Anda.</p>
+                <div class="prompt-box-wrapper">
+                    <div class="prompt-box-header">
+                        <span>PROMPT TEXT (GANTI VARIABEL SEBELUM DI-COPY)</span>
+                        <button class="btn-copy" onclick="copyPrompt('prompt1-1', this)"><i class="fa-solid fa-copy"></i> Salin Prompt</button>
+                    </div>
+                    <textarea id="prompt1-1" readonly class="prompt-content-text" rows="18">[ROLE]
+Bertindaklah sebagai Konsultan Riset Pasar dan Ahli Perilaku Konsumen Senior.
+
+[CONTEXT]
+Saya sedang mengembangkan bisnis/produk dengan detail sebagai berikut:
+- Nama Produk/Jasa: [Nama Produk/Jasa Anda]
+- Deskripsi Singkat: [Penjelasan singkat tentang apa yang Anda tawarkan]
+- Target Audiens Umum: [Misal: Ibu rumah tangga bekerja, mahasiswa tingkat akhir, pemilik kafe]
+
+[TASK]
+Tolong buatkan profil pelanggan ideal (ICP) yang sangat mendetail dalam format tabel terstruktur. Profil harus mencakup:
+1. Demografi: Usia rata-rata, pekerjaan, perkiraan pendapatan, status pernikahan.
+2. Psikografi: Nilai-nilai hidup, hobi, gaya hidup.
+3. Titik Frustrasi Terbesar (Pain Points): 3 masalah harian mereka yang berhubungan dengan produk saya.
+4. Impian Terbesar (Desires): Apa yang ingin mereka capai dalam 6 bulan ke depan jika masalah mereka selesai.
+5. Hambatan Membeli (Objections): Mengapa mereka ragu membeli produk seperti milik saya, dan bagaimana cara membujuk mereka.
+
+[OUTPUT FORMAT]
+Sajikan analisis ini dengan bahasa Indonesia yang profesional, taktis, dan mudah dipahami. Gunakan poin-poin yang tajam dan langsung ke sasaran.</textarea>
+                </div>
+            </div>
+
+            <!-- Prompt 1.2 -->
+            <div class="prompt-card">
+                <h4>Prompt 1.2: Analisis Kompetitor & Pencarian Celah Pasar (Gap Analysis)</h4>
+                <p class="prompt-card-desc">Tujuan: Menganalisis kelemahan kompetitor di pasar Anda dan menemukan keunggulan unik (USP) produk Anda.</p>
+                <div class="prompt-box-wrapper">
+                    <div class="prompt-box-header">
+                        <span>PROMPT TEXT (GANTI VARIABEL SEBELUM DI-COPY)</span>
+                        <button class="btn-copy" onclick="copyPrompt('prompt1-2', this)"><i class="fa-solid fa-copy"></i> Salin Prompt</button>
+                    </div>
+                    <textarea id="prompt1-2" readonly class="prompt-content-text" rows="18">[ROLE]
+Bertindaklah sebagai Analis Strategi Bisnis McKinsey yang ahli dalam taktik penetrasi pasar kompetitif.
+
+[CONTEXT]
+Kompetitor utama saya di ceruk pasar [Sebutkan Niche Anda, misal: Jasa Desain Grafis Instagram] adalah:
+1. [Kompetitor A - misal: Agensi lokal besar yang mahal]
+2. [Kompetitor B - misal: Freelancer murah di Fiverr yang responnya lambat]
+
+[TASK]
+Tolong lakukan analisis kekuatan, kelemahan, dan celah pasar (gap analysis) yang bisa saya masuki. Jawab poin-poin berikut:
+1. Apa kelemahan terbesar dari model bisnis Kompetitor A dan B yang paling sering dikeluhkan oleh pelanggan mereka?
+2. Bagaimana cara saya memposisikan produk saya agar terlihat 10x lebih bernilai tanpa harus perang harga?
+3. Buatkan draft kalimat "Penawaran Nilai Unik" (Unique Value Proposition) dalam 1 kalimat persuasif yang langsung membedakan saya dari kompetitor.
+
+[OUTPUT FORMAT]
+Gunakan format analisis SWOT ringkas dengan sub-heading yang jelas untuk setiap poin analisis.</textarea>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modul 2 Section -->
+        <section class="prompt-section" id="modul2">
+            <h2 class="gradient-text" style="font-size: 1.75rem; margin-bottom: 8px;">📂 MODUL 2: Copywriting Pemasaran (High-Conversion)</h2>
+            <p class="section-intro-text">Gunakan modul copywriting ini untuk membuat salinan halaman penjualan dan email promosi otomatis.</p>
+            
+            <!-- Prompt 2.1 -->
+            <div class="prompt-card">
+                <h4>Prompt 2.1: Teks Landing Page Formula PAS (Problem-Agitate-Solve)</h4>
+                <p class="prompt-card-desc">Tujuan: Menulis teks halaman penjualan yang menyentuh emosi pembaca agar terdorong segera membeli.</p>
+                <div class="prompt-box-wrapper">
+                    <div class="prompt-box-header">
+                        <span>PROMPT TEXT (GANTI VARIABEL SEBELUM DI-COPY)</span>
+                        <button class="btn-copy" onclick="copyPrompt('prompt2-1', this)"><i class="fa-solid fa-copy"></i> Salin Prompt</button>
+                    </div>
+                    <textarea id="prompt2-1" readonly class="prompt-content-text" rows="18">[ROLE]
+Bertindaklah sebagai Copywriter Konversi Tinggi (Direct-Response Copywriter) kelas dunia setingkat Dan Kennedy atau Eugene Schwartz.
+
+[CONTEXT]
+Saya ingin menjual [Nama Produk/Jasa Anda] kepada [Target Market Anda]. 
+Manfaat utama produk ini adalah: [Sebutkan manfaat utama, misal: membantu membuat 30 konten dalam 1 jam].
+Harga produk: [Harga Anda, misal: Rp 99.000].
+
+[TASK]
+Tuliskan draf copywriting Landing Page menggunakan struktur formula PAS (Problem, Agitate, Solve). Struktur teks harus terdiri dari:
+1. **Headline (Judul Utama)**: Harus sangat memikat perhatian, menyoroti masalah utama, dan menawarkan solusi cepat.
+2. **Sub-headline**: Penjelasan tambahan yang memperkuat Headline dan membangun rasa penasaran.
+3. **Problem (Masalah)**: Deskripsikan rasa frustrasi yang dialami target pasar saat ini dengan sangat relasional.
+4. **Agitate (Amanat/Dramatisasi)**: Perjelas dampak buruk jika masalah tersebut tidak segera diselesaikan sekarang juga (buat mereka merasa urgensinya).
+5. **Solve (Solusi)**: Perkenalkan [Nama Produk Anda] sebagai satu-satunya jalan keluar terbaik. Sebutkan 3 fitur utama beserta manfaat emosionalnya untuk pelanggan.
+6. **Call to Action (CTA)**: Kalimat ajakan bertindak yang kuat dan bebas risiko untuk menekan tombol beli.
+
+[CONSTRAINTS]
+Gunakan gaya bahasa Indonesia yang persuasif, santai namun meyakinkan, tidak kaku, dan menggunakan kata ganti "Kamu" atau "Anda" agar terasa personal.</textarea>
+                </div>
+            </div>
+
+            <!-- Prompt 2.2 -->
+            <div class="prompt-card">
+                <h4>Prompt 2.2: Email Sequence Penjualan 5 Hari (Otomatis)</h4>
+                <p class="prompt-card-desc">Tujuan: Mengubah pendaftar gratisan menjadi pembeli berbayar melalui edukasi email otomatis.</p>
+                <div class="prompt-box-wrapper">
+                    <div class="prompt-box-header">
+                        <span>PROMPT TEXT (GANTI VARIABEL SEBELUM DI-COPY)</span>
+                        <button class="btn-copy" onclick="copyPrompt('prompt2-2', this)"><i class="fa-solid fa-copy"></i> Salin Prompt</button>
+                    </div>
+                    <textarea id="prompt2-2" readonly class="prompt-content-text" rows="18">[ROLE]
+Bertindaklah sebagai Ahli Pemasaran Email (Email Marketing Specialist) dengan fokus konversi penjualan produk digital.
+
+[CONTEXT]
+Pengunjung baru saja mengunduh produk gratis saya yang berjudul [Nama Produk Gratis Anda]. Sekarang, saya ingin mengarahkan mereka secara otomatis dalam 5 hari ke depan untuk membeli produk berbayar saya: [Nama Produk Berbayar Anda] seharga [Harga].
+
+[TASK]
+Tolong buatkan draf 3 email penting dari rangkaian email 5 hari ini:
+1. **Email 1 (Pengiriman & Nilai Tambah - Hari ke-1)**:
+   - Subjek: [Nama File] Anda siap diunduh! (+ Kejutan kecil di dalam)
+   - Isi: Berikan link unduhan, jelaskan cara menggunakannya secara instan, dan berikan ekspektasi bahwa Anda akan mengirimkan tips berharga lainnya besok.
+2. **Email 2 (Edukasi & Masalah Tersembunyi - Hari ke-3)**:
+   - Subjek: Mengapa 90% [Target Market] gagal dalam hal [Topik Masalah]?
+   - Isi: Ceritakan kesalahan umum yang sering mereka lakukan tanpa sadar. Tunjukkan bahwa ada cara yang jauh lebih mudah jika mereka memiliki sistem yang tepat.
+3. **Email 3 (Penawaran & Urgensi - Hari ke-5)**:
+   - Subjek: Hanya tersisa 24 jam untuk mendapatkan [Nama Produk Berbayar] (Diskon Spesial)
+   - Isi: Berikan penawaran eksklusif, sebutkan jaminan kepuasan (refund/lifetime update), dan berikan CTA tegas ke halaman pembayaran.
+
+[OUTPUT FORMAT]
+Tuliskan subjek email dan isi email secara lengkap. Berikan catatan kaki (note) untuk setiap email mengenai kapan waktu terbaik mengirimkannya.</textarea>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modul 3 Section -->
+        <section class="prompt-section" id="modul3">
+            <h2 class="gradient-text" style="font-size: 1.75rem; margin-bottom: 8px;">📂 MODUL 3: Pabrik Konten Media Sosial (Content Machine)</h2>
+            <p class="section-intro-text">Rancang kalender konten 30 hari dan script video pendek TikTok/Reels menggunakan modul ini.</p>
+            
+            <!-- Prompt 3.1 -->
+            <div class="prompt-card">
+                <h4>Prompt 3.1: Kalender Konten 30 Hari (30-Day Content Calendar Matrix)</h4>
+                <p class="prompt-card-desc">Tujuan: Menyusun ide konten harian terstruktur yang mengarahkan penonton ke link di bio Anda.</p>
+                <div class="prompt-box-wrapper">
+                    <div class="prompt-box-header">
+                        <span>PROMPT TEXT (GANTI VARIABEL SEBELUM DI-COPY)</span>
+                        <button class="btn-copy" onclick="copyPrompt('prompt3-1', this)"><i class="fa-solid fa-copy"></i> Salin Prompt</button>
+                    </div>
+                    <textarea id="prompt3-1" readonly class="prompt-content-text" rows="18">[ROLE]
+Bertindaklah sebagai Viral Content Strategist & Growth Hacker Media Sosial.
+
+[CONTEXT]
+Niche bisnis saya adalah [Sebutkan Niche Anda]. Produk utama saya yang ada di link bio adalah [Nama Produk Anda]. Saya perlu memproduksi konten video pendek secara konsisten untuk mendatangkan traffic organik tanpa iklan.
+
+[TASK]
+Buatkan matriks rencana konten selama 4 minggu (30 hari) dalam format tabel dengan kolom:
+- Hari (Day 1 - Day 30)
+- Pilar Konten (Edukasi, Hiburan/Relatable, Promosi Soft Sell, Studi Kasus/Testimoni)
+- Ide Judul Kait (Hook Title) yang memicu klik.
+- Deskripsi Visual Singkat (Apa yang harus ditampilkan di layar video).
+
+[CONSTRAINTS]
+Pastikan komposisi konten seimbang: 70% Edukasi/Relatable (untuk menjangkau audiens baru) dan 30% Promosi Soft Sell/Studi Kasus (untuk mendorong penjualan).</textarea>
+                </div>
+            </div>
+
+            <!-- Prompt 3.2 -->
+            <div class="prompt-card">
+                <h4>Prompt 3.2: Penulisan Script Video Pendek TikTok/Reels</h4>
+                <p class="prompt-card-desc">Tujuan: Membuat naskah video dengan retensi tinggi agar disebarkan secara organik oleh algoritma.</p>
+                <div class="prompt-box-wrapper">
+                    <div class="prompt-box-header">
+                        <span>PROMPT TEXT (GANTI VARIABEL SEBELUM DI-COPY)</span>
+                        <button class="btn-copy" onclick="copyPrompt('prompt3-2', this)"><i class="fa-solid fa-copy"></i> Salin Prompt</button>
+                    </div>
+                    <textarea id="prompt3-2" readonly class="prompt-content-text" rows="18">[ROLE]
+Bertindaklah sebagai Scriptwriter TikTok & Reels profesional yang spesialis membuat video edukasi bisnis mikro yang viral.
+
+[CONTEXT]
+Saya ingin membuat video pendek berdurasi 30 detik untuk mempromosikan [Nama Produk/Notion Template Anda]. Konten ini akan berfokus pada masalah: [Sebutkan masalah, misal: lelah mengelola keuangan manual].
+
+[TASK]
+Tuliskan 3 alternatif script video pendek dengan gaya bahasa lisan (casual Indonesia/bahasa percakapan sehari-hari). Setiap script harus mencakup instruksi visual dan teks suara:
+1. **Script 1: Gaya Kontroversial/Menggugah Kesadaran**
+   - Mulai dengan hook yang membantah keyakinan umum di niche tersebut.
+2. **Script 2: Gaya Tutorial Cepat "Buka Layar"**
+   - Menunjukkan langkah demi langkah praktis menyelesaikan masalah menggunakan produk saya dalam waktu 15 detik.
+3. **Script 3: Gaya Storytelling "Sebelum vs Sesudah"**
+   - Menceritakan transformasi nyata yang dirasakan setelah menggunakan sistem automasi ini.
+
+[OUTPUT FORMAT]
+Gunakan format penulisan skrip dua kolom:
+Kiri: [VISUAL] (Instruksi kamera, transisi, atau teks di layar)
+Kanan: [AUDIO] (Suara narator / Text-to-Speech)</textarea>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modul 4 Section -->
+        <section class="prompt-section" id="modul4">
+            <h2 class="gradient-text" style="font-size: 1.75rem; margin-bottom: 8px;">📂 MODUL 4: Sistem Automasi Operasional</h2>
+            <p class="section-intro-text">SOP penataan alur kerja pengiriman produk otomatis dan template respons layanan pelanggan.</p>
+            
+            <!-- Prompt 4.1 -->
+            <div class="prompt-card">
+                <h4>Prompt 4.1: Pembuatan SOP Otomatisasi Bisnis Digital</h4>
+                <p class="prompt-card-desc">Tujuan: Menyetel pengiriman file otomatis dan penanganan masalah teknis pelanggan.</p>
+                <div class="prompt-box-wrapper">
+                    <div class="prompt-box-header">
+                        <span>PROMPT TEXT (GANTI VARIABEL SEBELUM DI-COPY)</span>
+                        <button class="btn-copy" onclick="copyPrompt('prompt4-1', this)"><i class="fa-solid fa-copy"></i> Salin Prompt</button>
+                    </div>
+                    <textarea id="prompt4-1" readonly class="prompt-content-text" rows="18">[ROLE]
+Bertindaklah sebagai System Operations Engineer (SOP Expert) khusus bisnis e-commerce digital.
+
+[CONTEXT]
+Saya ingin membuat sistem operasional yang berjalan sendiri di latar belakang.
+Alur penjualan saya adalah:
+1. Pelanggan melihat video di TikTok -> Klik link di bio.
+2. Mereka membeli produk di landing page [Systeme.io / Gumroad].
+3. Pembayaran diproses secara otomatis [Midtrans / PayPal / Stripe].
+
+[TASK]
+Tolong buatkan dokumen SOP langkah demi langkah tentang bagaimana saya harus menyetel sistem ini agar terintegrasi penuh. Jelaskan:
+- Bagaimana cara setup pengiriman email otomatis berisi link download produk langsung setelah pembayaran dikonfirmasi sukses.
+- Tindakan apa yang harus dilakukan jika ada pembeli yang melaporkan "Email unduhan belum masuk" (buatkan template balasan email CS yang ramah untuk masalah ini).
+- Cara melakukan backup data pembeli (database email) secara mingguan secara otomatis.</textarea>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Custom Script for Clipboard Copying and Sidebar Highlight -->
+    <script>
+        function copyPrompt(textareaId, buttonElement) {
+            const textarea = document.getElementById(textareaId);
+            
+            // Select and copy
+            textarea.select();
+            textarea.setSelectionRange(0, 99999); // For mobile devices
+            
+            navigator.clipboard.writeText(textarea.value).then(() => {
+                // Visual feedback
+                const originalText = buttonElement.innerHTML;
+                buttonElement.innerHTML = '<i class="fa-solid fa-check"></i> Tersalin!';
+                buttonElement.classList.add('copied');
+                
+                setTimeout(() => {
+                    buttonElement.innerHTML = originalText;
+                    buttonElement.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                alert('Gagal menyalin teks: ' + err);
+            });
+        }
+
+        // Highlight active sidebar menu based on scroll position
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section, header');
+            const menuLinks = document.querySelectorAll('.sidebar-menu a');
+            
+            let currentSectionId = 'welcome';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 120;
+                if (window.pageYOffset >= sectionTop) {
+                    currentSectionId = section.getAttribute('id');
+                }
+            });
+
+            menuLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${currentSectionId}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
